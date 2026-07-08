@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { LoadingScreen } from "@/components/layout/LoadingScreen";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -16,10 +16,15 @@ import { CertificationsSection } from "@/components/sections/CertificationsSecti
 import { ContactSection } from "@/components/sections/ContactSection";
 
 export function PortfolioPage() {
-  const [loading, setLoading] = useState(() => {
-    if (typeof window === "undefined") return true;
-    return !sessionStorage.getItem("boot-complete");
-  });
+  const [loading, setLoading] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    if (!sessionStorage.getItem("boot-complete")) {
+      setLoading(true);
+    }
+  }, []);
 
   const handleLoadComplete = useCallback(() => {
     sessionStorage.setItem("boot-complete", "true");
@@ -28,7 +33,7 @@ export function PortfolioPage() {
 
   return (
     <>
-      {loading && <LoadingScreen onComplete={handleLoadComplete} />}
+      {mounted && loading && <LoadingScreen onComplete={handleLoadComplete} />}
       <ParticleBackground />
       <div className="relative z-10 grid-bg min-h-screen">
         <Navbar />
