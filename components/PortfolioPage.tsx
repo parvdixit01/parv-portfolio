@@ -24,6 +24,14 @@ export function PortfolioPage() {
     if (!sessionStorage.getItem("boot-complete")) {
       setLoading(true);
     }
+
+    // Safety fallback — never stay stuck on boot screen
+    const timeout = setTimeout(() => {
+      sessionStorage.setItem("boot-complete", "true");
+      setLoading(false);
+    }, 8000);
+
+    return () => clearTimeout(timeout);
   }, []);
 
   const handleLoadComplete = useCallback(() => {

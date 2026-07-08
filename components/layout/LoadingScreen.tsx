@@ -44,6 +44,12 @@ export function LoadingScreen({ onComplete }: { onComplete: () => void }) {
               </span>
             </div>
             <div className="glass rounded-xl p-6 font-mono text-sm">
+              {lines.length === 0 && (
+                <p className="text-cyan/90">
+                  <span className="text-foreground-muted">[{">"}]</span>{" "}
+                  Initializing Nexus Terminal...
+                </p>
+              )}
               {lines.map((line, i) => (
                 <motion.p
                   key={i}
@@ -56,6 +62,16 @@ export function LoadingScreen({ onComplete }: { onComplete: () => void }) {
               ))}
               <span className="cursor-blink inline-block h-4 w-2 bg-cyan" />
             </div>
+            <button
+              type="button"
+              onClick={() => {
+                setDone(true);
+                onComplete();
+              }}
+              className="mt-4 font-mono text-xs text-foreground-muted transition-colors hover:text-cyan"
+            >
+              [skip boot →]
+            </button>
           </div>
         </motion.div>
       )}
